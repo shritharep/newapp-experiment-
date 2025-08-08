@@ -34,7 +34,8 @@ def run():
     if st.session_state.current_question < st.session_state.total_questions:
         current_q = questions[st.session_state.current_question]
         st.write(current_q["text"])
-        st.session_state[current_q["key"]] = st.text_input("Your Answer", key=current_q["key"])
+        st.text_input("Your Answer", key=current_q["key"])
+        #st.session_state[current_q["key"]] = st.text_input("Your Answer", key=current_q["key"])
 
     col1, col2 = st.columns(2)
 
