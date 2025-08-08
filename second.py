@@ -137,3 +137,5 @@ def run():
 
         except (IndexError, AttributeError) as e:
             st.error(f"Sorry, something went wrong with processing the generated response. Error: {e}")
+if __name__ == "__main__":
+    run()
