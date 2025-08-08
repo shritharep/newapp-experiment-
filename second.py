@@ -105,6 +105,7 @@ Important Considerations for Your AI Analysis
 - Minimize Waste
 
 Please respond as a trusted and seasoned culinary-nutritional expert-professional, clear, warm, and fully aligned with my goals for nourishment, enjoyment, and practical success.
+Provide the output in plain text. Do not use any markdown formatting, including headings, lists, bold text, or underlining. Structure the information clearly using line breaks and indentation only. Use bullet points under subheadings with hyphens.
 '''
                 with st.spinner('Generating your personalized meal plan...'):
                     try:
