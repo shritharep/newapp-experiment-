@@ -1,3 +1,4 @@
+app_js_content_with_css_import = """
 import React, { useState } from 'react';
 import './App.css'; // Import the CSS file
 
@@ -27,9 +28,7 @@ function App() {
       };
       setDetails(userDetails);
       setShowWarning(false);
-      // Here you would typically call an API or function to generate the plan
-      // For now, we'll simulate a plan
-      setPlan("This is a simulated plan based on your inputs."); // Simulate generating a plan
+      
     } else {
       setDetails(null);
       setPlan(null);
@@ -127,3 +126,6 @@ function App() {
 }
 
 export default App;
+"""
+
+print(app_js_content_with_css_import)
