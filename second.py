@@ -1,6 +1,7 @@
 #Rupin Tham's code backbone
 import streamlit as st
 import google.generativeai as genai
+import re
 
 def run():
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -44,11 +45,12 @@ def run():
                 st.session_state.current_question -= 1
                 st.experimental_rerun()
 
-    with col2:
+        with col2:
         if st.session_state.current_question < st.session_state.total_questions:
-            if st.button("Next"):
-                st.session_state.current_question += 1
-                st.experimental_rerun()
+            if st.session_state.get(questions[st.session_state.current_question]['key'], ''):
+                 if st.button("Next"):
+                    st.session_state.current_question += 1
+                    st.experimental_rerun()
         elif st.session_state.current_question == st.session_state.total_questions:
             if st.button("Generate Meal Plan"):
                 prompt = f'''
@@ -121,7 +123,6 @@ def run():
             meal_plan_content = meal_plan_match.group(1).strip() if meal_plan_match else "Could not generate Detailed Meal Plan."
             grocery_list_content = grocery_list_match.group(1).strip() if grocery_list_match else "Could not generate Optimized Grocery List."
             advice_content = advice_match.group(1).strip() if advice_match else "Could not generate Chef's & Dietitian's Strategic Advice."
-
 
             tab1, tab2, tab3 = st.tabs(["Detailed Meal Plan", "Optimized Grocery List", "Chef's & Dietitian's Strategic Advice"])
 
