@@ -1,8 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 import first
-  import second
-
+import second
 st.set_page_config(page_title="FreshFetch", layout="wide")
 
 st.markdown("Choose your personal guide for today")
