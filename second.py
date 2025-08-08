@@ -1,7 +1,6 @@
 #Rupin Tham's code backbone
 import streamlit as st
 import google.generativeai as genai
-import re
 
 def run():
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
