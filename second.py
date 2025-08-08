@@ -44,7 +44,7 @@ def run():
                 st.session_state.current_question -= 1
                 st.experimental_rerun()
 
-        with col2:
+    with col2:
         if st.session_state.current_question < st.session_state.total_questions:
             if st.session_state.get(questions[st.session_state.current_question]['key'], ''):
                  if st.button("Next"):
