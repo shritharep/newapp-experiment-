@@ -2,143 +2,137 @@ import streamlit as st
 import google.generativeai as genai
 import re
 
-genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+def run():
+    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-model = genai.GenerativeModel('gemini-2.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
 
-st.set_page_config(page_title="FreshFetch Meal Plan", layout="wide")
-st.title("FreshFetch Meal Plan Generator")
+    st.set_page_config(page_title="FreshFetch Meal Plan", layout="wide")
+    st.title("FreshFetch Meal Plan Generator")
 
-if 'current_question' not in st.session_state:
-    st.session_state.current_question = 0
+    if 'current_question' not in st.session_state:
+        st.session_state.current_question = 0
 
-questions = [
-    {"text": "1. What is the purpose of meal planning?", "key": "event"},
-    {"text": "2. What is the duration of the plan (e.g., 7 days, 1 weekend)?", "key": "duration"},
-    {"text": "3. Describe the desired setting or outcome:", "key": "setting"},
-    {"text": "4. List mandatory restrictions/allergies (or 'None'):", "key": "restrictions"},
-    {"text": "5. List dietary preferences and dislikes (or 'None'):", "key": "preferences"},
-    {"text": "6. List any nutritional focus (or 'None'):", "key": "nutrition_focus"},
-    {"text": "7. List any kitchen equipment constraints (or 'None'):", "key": "equipment"},
-    {"text": "8. Enter your total grocery budget (e.g., $100 total):", "key": "budget"},
-    {"text": "9. Optional: Describe your grocery shopping style (or leave blank):", "key": "shopping_style"},
-]
+    questions = [
+        {"text": "1. What is the purpose of meal planning?", "key": "event"},
+        {"text": "2. What is the duration of the plan (e.g., 7 days, 1 weekend)?", "key": "duration"},
+        {"text": "3. Describe the desired setting or outcome:", "key": "setting"},
+        {"text": "4. List mandatory restrictions/allergies (or 'None'):", "key": "restrictions"},
+        {"text": "5. List dietary preferences and dislikes (or 'None'):", "key": "preferences"},
+        {"text": "6. List any nutritional focus (or 'None'):", "key": "nutrition_focus"},
+        {"text": "7. List any kitchen equipment constraints (or 'None'):", "key": "equipment"},
+        {"text": "8. Enter your total grocery budget (e.g., $100 total):", "key": "budget"},
+        {"text": "9. Optional: Describe your grocery shopping style (or leave blank):", "key": "shopping_style"},
+    ]
 
-st.session_state.total_questions = len(questions)
+    st.session_state.total_questions = len(questions)
 
-# Progress bar
-progress_percentage = st.session_state.current_question / st.session_state.total_questions
-st.progress(progress_percentage)
+    progress_percentage = st.session_state.current_question / st.session_state.total_questions
+    st.progress(progress_percentage)
 
 
-# Display the current question and input
-if st.session_state.current_question < st.session_state.total_questions:
-    current_q = questions[st.session_state.current_question]
-    st.write(current_q["text"])
-    st.session_state[current_q["key"]] = st.text_input("Your Answer", key=current_q["key"])
-
-# Navigation buttons
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.session_state.current_question > 0:
-        if st.button("Back"):
-            st.session_state.current_question -= 1
-            st.experimental_rerun()
-
-with col2:
     if st.session_state.current_question < st.session_state.total_questions:
-        if st.button("Next"):
-            st.session_state.current_question += 1
-            st.experimental_rerun()
-    elif st.session_state.current_question == st.session_state.total_questions:
-        if st.button("Generate Meal Plan"):
-            # Build the expert prompt
-            prompt = f'''
-As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by a precise grocery list, tailored to my specific needs. My goal is to create exceptional and nourishing meals for the following event or situation.
+        current_q = questions[st.session_state.current_question]
+        st.write(current_q["text"])
+        st.session_state[current_q["key"]] = st.text_input("Your Answer", key=current_q["key"])
 
-1. Event & Context
-- Purpose of Meal Planning: {st.session_state.get('event', 'N/A')}
-- Duration of Plan: {st.session_state.get('duration', 'N/A')}
-- Desired Setting: {st.session_state.get('setting', 'N/A')}
+    col1, col2 = st.columns(2)
 
-2. Dietary & Health Profile
-- Mandatory Restrictions / Allergies: {st.session_state.get('restrictions', 'None')}
-- Dietary Preferences & Dislikes: {st.session_state.get('preferences', 'None')}
-- Nutritional Focus: {st.session_state.get('nutrition_focus', 'None')}
-- Kitchen Equipment Constraints: {st.session_state.get('equipment', 'None')}
+    with col1:
+        if st.session_state.current_question > 0:
+            if st.button("Back"):
+                st.session_state.current_question -= 1
+                st.experimental_rerun()
 
-3. Budgetary Framework
-- Total Grocery Budget: {st.session_state.get('budget', 'N/A')}
-- Grocery Shopping Style: {st.session_state.get('shopping_style', 'None')}
+    with col2:
+        if st.session_state.current_question < st.session_state.total_questions:
+            if st.button("Next"):
+                st.session_state.current_question += 1
+                st.experimental_rerun()
+        elif st.session_state.current_question == st.session_state.total_questions:
+            if st.button("Generate Meal Plan"):
+                prompt = f'''
+    As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by a precise grocery list, tailored to my specific needs. My goal is to create exceptional and nourishing meals for the following event or situation.
 
-4. Required Output
+    1. Event & Context
+    - Purpose of Meal Planning: {st.session_state.get('event', 'N/A')}
+    - Duration of Plan: {st.session_state.get('duration', 'N/A')}
+    - Desired Setting: {st.session_state.get('setting', 'N/A')}
 
-A. Detailed Meal Plan
-- Dish Name & Brief Description
-- Key Ingredients Highlight
-- Estimated Prep & Cooking Time
-- Portion Estimate
-- Nutritional Rationale
+    2. Dietary & Health Profile
+    - Mandatory Restrictions / Allergies: {st.session_state.get('restrictions', 'None')}
+    - Dietary Preferences & Dislikes: {st.session_state.get('preferences', 'None')}
+    - Nutritional Focus: {st.session_state.get('nutrition_focus', 'None')}
+    - Kitchen Equipment Constraints: {st.session_state.get('equipment', 'None')}
 
-B. Optimized Grocery List
-- Categorization by grocery store section
-- Precise Quantities
-- Cost-Saving Notes
+    3. Budgetary Framework
+    - Total Grocery Budget: {st.session_state.get('budget', 'N/A')}
+    - Grocery Shopping Style: {st.session_state.get('shopping_style', 'None')}
 
-C. Chef's & Dietitian's Strategic Advice
-- Budget Management Tips
-- Preparation Efficiency
-- Flexibility & Substitution Notes
-- Nutritional Insights
+    4. Required Output
 
-Important Considerations for Your AI Analysis
-- Creativity & Innovation
-- Practicality
-- Flavor Balance
-- Minimize Waste
+    A. Detailed Meal Plan
+    - Dish Name & Brief Description
+    - Key Ingredients Highlight
+    - Estimated Prep & Cooking Time
+    - Portion Estimate
+    - Nutritional Rationale
 
-Please respond as a trusted and seasoned culinary-nutritional expert-professional, clear, warm, and fully aligned with my goals for nourishment, enjoyment, and practical success.
-'''
+    B. Optimized Grocery List
+    - Categorization by grocery store section
+    - Precise Quantities
+    - Cost-Saving Notes
 
-            # Generate response from Gemini with spinner
-            with st.spinner('Generating your personalized meal plan...'):
-                try:
-                    response = model.generate_content(prompt)
-                    st.session_state.generated_content = response.candidates[0].content.parts[0].text
-                except Exception as e:
-                    st.session_state.generated_content = None
-                    st.error(f"Sorry, something went wrong while generating the meal plan. Error: {e}")
+    C. Chef's & Dietitian's Strategic Advice
+    - Budget Management Tips
+    - Preparation Efficiency
+    - Flexibility & Substitution Notes
+    - Nutritional Insights
 
-            st.experimental_rerun()
+    Important Considerations for Your AI Analysis
+    - Creativity & Innovation
+    - Practicality
+    - Flavor Balance
+    - Minimize Waste
 
-# Display generated content if available
-if 'generated_content' in st.session_state and st.session_state.generated_content is not None:
-    st.subheader("Your Personalized Meal Plan")
+    Please respond as a trusted and seasoned culinary-nutritional expert-professional, clear, warm, and fully aligned with my goals for nourishment, enjoyment, and practical success.
+    '''
 
-    try:
-        content = st.session_state.generated_content
+                with st.spinner('Generating your personalized meal plan...'):
+                    try:
+                        response = model.generate_content(prompt)
+                        st.session_state.generated_content = response.candidates[0].content.parts[0].text
+                    except Exception as e:
+                        st.session_state.generated_content = None
+                        st.error(f"Sorry, something went wrong while generating the meal plan. Error: {e}")
 
-        # Split the content into sections based on the headings
-        meal_plan_match = re.search(r"A\. Detailed Meal Plan\s*(-.*?\n\n|\Z)", content, re.DOTALL)
-        grocery_list_match = re.search(r"B\. Optimized Grocery List\s*(-.*?\n\n|\Z)", content, re.DOTALL)
-        advice_match = re.search(r"C\. Chef's & Dietitian's Strategic Advice\s*(-.*|\Z)", content, re.DOTALL)
+                st.experimental_rerun()
 
-        meal_plan_content = meal_plan_match.group(1).strip() if meal_plan_match else "Could not generate Detailed Meal Plan."
-        grocery_list_content = grocery_list_match.group(1).strip() if grocery_list_match else "Could not generate Optimized Grocery List."
-        advice_content = advice_match.group(1).strip() if advice_match else "Could not generate Chef's & Dietitian's Strategic Advice."
+    if 'generated_content' in st.session_state and st.session_state.generated_content is not None:
+        st.subheader("Your Personalized Meal Plan")
+
+        try:
+            content = st.session_state.generated_content
+
+            meal_plan_match = re.search(r"A\. Detailed Meal Plan\s*(-.*?\n\n|\Z)", content, re.DOTALL)
+            grocery_list_match = re.search(r"B\. Optimized Grocery List\s*(-.*?\n\n|\Z)", content, re.DOTALL)
+            advice_match = re.search(r"C\. Chef's & Dietitian's Strategic Advice\s*(-.*|\Z)", content, re.DOTALL)
+
+            meal_plan_content = meal_plan_match.group(1).strip() if meal_plan_match else "Could not generate Detailed Meal Plan."
+            grocery_list_content = grocery_list_match.group(1).strip() if grocery_list_match else "Could not generate Optimized Grocery List."
+            advice_content = advice_match.group(1).strip() if advice_match else "Could not generate Chef's & Dietitian's Strategic Advice."
 
 
-        tab1, tab2, tab3 = st.tabs(["Detailed Meal Plan", "Optimized Grocery List", "Chef's & Dietitian's Strategic Advice"])
+            tab1, tab2, tab3 = st.tabs(["Detailed Meal Plan", "Optimized Grocery List", "Chef's & Dietitian's Strategic Advice"])
 
-        with tab1:
-            st.write(meal_plan_content)
+            with tab1:
+                st.write(meal_plan_content)
 
-        with tab2:
-            st.write(grocery_list_content)
+            with tab2:
+                st.write(grocery_list_content)
 
-        with tab3:
-            st.write(advice_content)
+            with tab3:
+                st.write(advice_content)
 
-    except (IndexError, AttributeError) as e:
-        st.error(f"Sorry, something went wrong with processing the generated response. Error: {e}")
+        except (IndexError, AttributeError) as e:
+            st.error(f"Sorry, something went wrong with processing the generated response. Error: {e}")
