@@ -110,7 +110,6 @@ def run():
                         st.session_state.generated_content = None
                         st.error(f"Sorry, something went wrong while generating the meal plan. Error: {e}")
 
-                st.rerun()  # Use this if you're on Streamlit >= 1.25
 
     if 'generated_content' in st.session_state and st.session_state.generated_content is not None:
         st.subheader("Your Personalized Meal Plan")
