@@ -1,7 +1,6 @@
 #Rupin Tham's code backbone
 import streamlit as st
 import google.generativeai as genai
-import re
 
 def run():
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -137,5 +136,3 @@ def run():
 
         except (IndexError, AttributeError) as e:
             st.error(f"Sorry, something went wrong with processing the generated response. Error: {e}")
-if __name__ == "__main__":
-    run()
