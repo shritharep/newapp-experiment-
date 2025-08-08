@@ -23,13 +23,13 @@ with secondchoice:
     st.session_state.selected_app = "360° Status Prep"
 with thirdchoice:
   if st.button("In-Depth Meal Planner"):
-    st.session_state.selected_app = "In-Depth Meal Planner"
+    st.session_state.selected_app = "Selective Meal Plan"
 
 
 if st.session_state.selected_app == "Individual Wellness Trainer":
   first.run()
 elif st.session_state.selected_app == "360° Status Prep":
   second.run()
-elif st.session_state-selected_app == "In-Depth Meal Planner":
+elif st.session_state-selected_app == "Selective Meal Plan":
   third.run()
 
