@@ -31,29 +31,37 @@ def run():
     progress_percentage = st.session_state.current_question / st.session_state.total_questions
     st.progress(progress_percentage)
 
+    # Show question and capture answer
     if st.session_state.current_question < st.session_state.total_questions:
         current_q = questions[st.session_state.current_question]
+        # Use value=st.session_state.get(key, "") to preserve answer when going back
         st.write(current_q["text"])
-        st.text_input("Your Answer", key=current_q["key"])
+        st.text_input(
+            "Your Answer", 
+            key=current_q["key"],
+            value=st.session_state.get(current_q["key"], "")
+        )
 
     col1, col2 = st.columns(2)
 
     with col1:
         if st.session_state.current_question > 0:
-            if st.button("Back"):
+            if st.button("Back", key="back_btn"):
                 st.session_state.current_question -= 1
                 st.rerun()
 
     with col2:
         if st.session_state.current_question < st.session_state.total_questions:
-            if st.session_state.get(questions[st.session_state.current_question]['key'], ''):
-                if st.button("Next"):
+            curr_key = questions[st.session_state.current_question]['key']
+            # Use st.session_state.get(curr_key, '') to check if answered
+            if st.session_state.get(curr_key, ''):
+                if st.button("Next", key="next_btn"):
                     st.session_state.current_question += 1
                     st.rerun()
         elif st.session_state.current_question == st.session_state.total_questions:
-            if st.button("Generate Meal Plan"):
+            if st.button("Generate Meal Plan", key="gen_btn"):
                 prompt = f'''
-As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by a precise grocery list, tailored to my specific needs. My goal is to create exceptional and nourishing meals for the following event or situation.
+As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by detailed guidance and an optimized grocery list. Please use the user-provided information for deep personalization.
 
 1. Event & Context
 - Purpose of Meal Planning: {st.session_state.get('event', 'N/A')}
@@ -98,41 +106,72 @@ Important Considerations for Your AI Analysis
 
 Please respond as a trusted and seasoned culinary-nutritional expert-professional, clear, warm, and fully aligned with my goals for nourishment, enjoyment, and practical success.
 '''
-
                 with st.spinner('Generating your personalized meal plan...'):
                     try:
                         response = model.generate_content(prompt)
-                        generated_text = response.candidates[0].content.parts[0].text
-                        st.session_state.generated_content = str(generated_text)  # Save to session state
-                        st.rerun()  # <-- Force rerun to display result immediately
+                        # Defensive: Check response structure
+                        if (hasattr(response, "candidates") and
+                            response.candidates and
+                            hasattr(response.candidates[0], "content") and
+                            hasattr(response.candidates[0].content, "parts") and
+                            response.candidates[0].content.parts):
+                            generated_text = response.candidates[0].content.parts[0].text
+                            st.session_state.generated_content = str(generated_text)
+                        else:
+                            st.session_state.generated_content = None
+                            st.error("Sorry, the AI response format was unexpected.")
+                        st.rerun()
                     except Exception as e:
                         st.session_state.generated_content = None
                         st.error(f"Sorry, something went wrong while generating the meal plan. Error: {e}")
 
-    if 'generated_content' in st.session_state and st.session_state.generated_content is not None:
+    # OUTPUT SECTION
+    if 'generated_content' in st.session_state and st.session_state.generated_content:
         st.subheader("Your Personalized Meal Plan")
 
         try:
             content = st.session_state.generated_content
+            st.write("**Raw AI Output (for debugging):**")
+            st.code(content)
 
-            meal_plan_match = re.search(r"A\. Detailed Meal Plan\s*(-.*?\n\n|\Z)", content, re.DOTALL)
-            grocery_list_match = re.search(r"B\. Optimized Grocery List\s*(-.*?\n\n|\Z)", content, re.DOTALL)
-            advice_match = re.search(r"C\. Chef's & Dietitian's Strategic Advice\s*(-.*|\Z)", content, re.DOTALL)
+            # Try to extract sections more robustly
+            # Use re.split for fallback
+            meal_plan_content = ""
+            grocery_list_content = ""
+            advice_content = ""
+
+            # Try section labels as anchors
+            meal_plan_match = re.search(r"A\. Detailed Meal Plan\s*(.*?)(?:\nB\. Optimized Grocery List|\n\nB\. Optimized Grocery List|\Z)", content, re.DOTALL)
+            grocery_list_match = re.search(r"B\. Optimized Grocery List\s*(.*?)(?:\nC\. Chef'?s & Dietitian'?s Strategic Advice|\n\nC\. Chef'?s & Dietitian'?s Strategic Advice|\Z)", content, re.DOTALL)
+            advice_match = re.search(r"C\. Chef'?s & Dietitian'?s Strategic Advice\s*(.*)", content, re.DOTALL)
 
             meal_plan_content = meal_plan_match.group(1).strip() if meal_plan_match else "Could not generate Detailed Meal Plan."
             grocery_list_content = grocery_list_match.group(1).strip() if grocery_list_match else "Could not generate Optimized Grocery List."
             advice_content = advice_match.group(1).strip() if advice_match else "Could not generate Chef's & Dietitian's Strategic Advice."
 
-            tab1, tab2, tab3 = st.tabs(["Detailed Meal Plan", "Optimized Grocery List", "Chef's & Dietitian's Strategic Advice"])
+            # If all regex fail, show fallback
+            if all("Could not generate" in s for s in [meal_plan_content, grocery_list_content, advice_content]):
+                st.warning("Could not extract structured output. Showing raw output below.")
+                st.write(content)
+            else:
+                tab1, tab2, tab3 = st.tabs(["Detailed Meal Plan", "Optimized Grocery List", "Chef's & Dietitian's Strategic Advice"])
 
-            with tab1:
-                st.write(meal_plan_content)
+                with tab1:
+                    st.markdown(meal_plan_content)
 
-            with tab2:
-                st.write(grocery_list_content)
+                with tab2:
+                    st.markdown(grocery_list_content)
 
-            with tab3:
-                st.write(advice_content)
+                with tab3:
+                    st.markdown(advice_content)
 
-        except (IndexError, AttributeError) as e:
+        except (IndexError, AttributeError, Exception) as e:
             st.error(f"Sorry, something went wrong with processing the generated response. Error: {e}")
+            st.write("**Debug info:**")
+            st.code(st.session_state.generated_content)
+    elif 'generated_content' in st.session_state and st.session_state.generated_content is None:
+        st.warning("No meal plan could be generated. Please check your inputs or try again.")
+
+# To run with Streamlit
+if __name__ == "__main__":
+    run()
