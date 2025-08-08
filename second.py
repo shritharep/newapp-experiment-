@@ -1,6 +1,7 @@
 #Rupin Tham's code backbone
 import streamlit as st
 import google.generativeai as genai
+import re
 
 def run():
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -103,12 +104,13 @@ def run():
                 with st.spinner('Generating your personalized meal plan...'):
                     try:
                         response = model.generate_content(prompt)
-                        st.session_state.generated_content = response.candidates[0].content.parts[0].text
+                        generated_text = response.candidates[0].content.parts[0].text
+                        st.session_state.generated_content = str(generated_text)  # Safe for session state
                     except Exception as e:
                         st.session_state.generated_content = None
                         st.error(f"Sorry, something went wrong while generating the meal plan. Error: {e}")
 
-                st.experimental_rerun()
+                st.rerun()  # Use this if you're on Streamlit >= 1.25
 
     if 'generated_content' in st.session_state and st.session_state.generated_content is not None:
         st.subheader("Your Personalized Meal Plan")
