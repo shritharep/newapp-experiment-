@@ -131,7 +131,6 @@ Please respond as a trusted and seasoned culinary-nutritional expert-professiona
 
         try:
             content = st.session_state.generated_content
-            st.write("**Raw AI Output (for debugging):**")
             st.code(content)
 
             # Try to extract sections more robustly
