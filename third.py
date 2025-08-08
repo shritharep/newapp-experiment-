@@ -11,7 +11,7 @@ def run():
     st.set_page_config(page_title="Fresh Fetch", layout="wide")
 
     # Welcome header
-    st.markdown("<h1 style='text-align: center; color: black;'>"Selective Meal Plan"</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: black;'>Selective Meal Plan</h1>", unsafe_allow_html=True)
     st.text("Welcome to...")
 
     # Define options
