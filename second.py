@@ -44,14 +44,14 @@ def run():
         if st.session_state.current_question > 0:
             if st.button("Back"):
                 st.session_state.current_question -= 1
-                st.experimental_rerun()
+                st.rerun()
 
     with col2:
         if st.session_state.current_question < st.session_state.total_questions:
             if st.session_state.get(questions[st.session_state.current_question]['key'], ''):
                  if st.button("Next"):
                     st.session_state.current_question += 1
-                    st.experimental_rerun()
+                    st.rerun()
         elif st.session_state.current_question == st.session_state.total_questions:
             if st.button("Generate Meal Plan"):
                 prompt = f'''
