@@ -5,7 +5,7 @@ def run():
     genai.configure(api_key=st.secrets["APIKEY"])
     model = genai.GenerativeModel("gemini-2.5-flash")
 
-    st.title("Individual Wellness Planner")
+    st.header("Individual Wellness Planner")
     st.write("Welcome to your very own customized wellness guide, tailored to you and your needs!")
 
     name = st.text_input("What is your name, or what should we call you?")
