@@ -8,7 +8,7 @@ def run():
 
     model = genai.GenerativeModel('gemini-2.5-flash')
 
-    st.set_page_config(page_title="FreshFetch Meal Plan", layout="wide")
+    st.set_page_config(page_title="Fresh Fetch Meal Plan", layout="wide")
     st.header("Meal Plan Generator")
 
     if 'current_question' not in st.session_state:
