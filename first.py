@@ -45,7 +45,6 @@ def run():
                 else:
                     st.info("You fall under the adult category.")
 
-            if st.button("Generate My Plan"):
                 st.subheader("Here is what you provided:")
                 st.write(f"Dietary Lifestyle: {dietary_lifestyle}")
                 st.write(f"Goal(s): {goals}")
@@ -73,6 +72,7 @@ def run():
                     Based on this info, I am {age} years old, and my dietary lifestyle is {dietary_lifestyle}. My goal date is {goal_date.strftime('%m/%d/%Y')}, and I'm willing to invest {investment} per month. I want to work on my {goals}, specifically {specific}. I also have some further notes and specifications: {particular}.
                 """
 
+            if st.button("Generate My Plan"):
                 response = model.generate_content([prompt])
                 st.subheader("Your Customized Plan:")
                 st.text(response.text)
