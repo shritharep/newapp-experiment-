@@ -12,7 +12,7 @@ def run():
     percent = 0
 
     percent_placeholder = st.markdown(
-        f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
+        f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:normal;'>{percent}%</span></p></div>",
         unsafe_allow_html=True
     )
     progress_bar = st.progress(progress)
