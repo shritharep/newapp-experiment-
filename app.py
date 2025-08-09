@@ -29,6 +29,6 @@ if st.session_state.selected_app == "Individual Wellness Trainer":
   first.run()
 elif st.session_state.selected_app == "360° Status Prep":
   second.run()
-elif st.session_state-selected_app == "Selective Meal Plan":
+elif st.session_state.selected_app == "Selective Meal Plan":
   third.run()
 
