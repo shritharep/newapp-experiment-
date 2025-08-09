@@ -12,7 +12,7 @@ def run():
     percent = 0
 
     percent_placeholder = st.markdown(
-        f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+        f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
         unsafe_allow_html=True
     )
     progress_bar = st.progress(progress)
@@ -22,7 +22,7 @@ def run():
         progress += 16
         percent = int(progress)
         percent_placeholder.markdown(
-            f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+            f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
             unsafe_allow_html=True
         )
         progress_bar.progress(progress)
@@ -33,7 +33,7 @@ def run():
             progress += 16
             percent = int(progress)
             percent_placeholder.markdown(
-                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                 unsafe_allow_html=True
             )
             progress_bar.progress(progress)
@@ -43,7 +43,7 @@ def run():
             progress += 16
             percent = int(progress)
             percent_placeholder.markdown(
-                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                 unsafe_allow_html=True
             )
             progress_bar.progress(progress)
@@ -59,7 +59,7 @@ def run():
                 progress += 12
                 percent = int(progress)
                 percent_placeholder.markdown(
-                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                     unsafe_allow_html=True
                 )
                 progress_bar.progress(progress)
@@ -68,7 +68,7 @@ def run():
                 progress += 12
                 percent = int(progress)
                 percent_placeholder.markdown(
-                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                     unsafe_allow_html=True
                 )
                 progress_bar.progress(progress)
@@ -78,7 +78,7 @@ def run():
                 progress += 12
                 percent = int(progress)
                 percent_placeholder.markdown(
-                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                     unsafe_allow_html=True
                 )
                 progress_bar.progress(progress)
@@ -87,7 +87,7 @@ def run():
                 progress += 12
                 percent = int(progress)
                 percent_placeholder.markdown(
-                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                     unsafe_allow_html=True
                 )
                 progress_bar.progress(progress)
@@ -107,7 +107,7 @@ def run():
                 progress += 4
                 percent = int(progress)
                 percent_placeholder.markdown(
-                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:0.95em; color:black; margin:0;'>Percent: <span style='font-weight:bold;'>{percent}%</span></p></div>",
                     unsafe_allow_html=True
                 )
                 progress_bar.progress(progress)
