@@ -8,7 +8,7 @@ def run():
     model = genai.GenerativeModel('gemini-2.5-flash')
 
     # Set page config
-    st.set_page_config(page_title="Fresh Fetch", layout="wide")
+    st.set_page_config(page_title="FreshFetch", layout="wide")
 
     # Welcome header
     st.markdown("<h2 style='text-align: center; color: black;'>Selective Meal Planner</h2>", unsafe_allow_html=True)
