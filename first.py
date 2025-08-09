@@ -10,32 +10,31 @@ def run():
 
     progress = 0
     percent = 0
-    progress_bar = st.progress(progress)
-    percent_text = st.empty()
-    percent_text.text(f"Percent: {percent}%")
 
+    percent_placeholder = st.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+    progress_bar = st.progress(progress)
 
     name = st.text_input("What is your name, or what should we call you?")
     if name:
         progress += 16
         percent = int(progress)
+        percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
         progress_bar.progress(progress)
-        percent_text.text(f"Percent: %{percent}")
         st.success(f"Hi {name}! Welcome to the community! Let's get started.")
 
         dietary_lifestyle = st.text_input("What is your dietary lifestyle? (e.g., vegetarian, vegan, non-vegetarian, no restrictions)")
         if dietary_lifestyle:
             progress += 16
             percent = int(progress)
+            percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
             progress_bar.progress(progress)
-            percent_text.text(f"Percent: %{percent}")
 
         goals = st.selectbox("What is your aim with this platform?", ["", "fitness", "health", "weight-management"])
         if goals:
             progress += 16
             percent = int(progress)
+            percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
             progress_bar.progress(progress)
-            percent_text.text(f"Percent: %{percent}")
             if goals == "fitness":
                 st.info("Looks like you want to improve your fitness levels. Good for you!")
             elif goals == "health":
@@ -47,27 +46,27 @@ def run():
             if specific:
                 progress += 12
                 percent = int(progress)
+                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
                 progress_bar.progress(progress)
-                percent_text.text(f"Percent: %{percent}")
             particular = st.text_input("Any specific area of your body or any further specifications?")
             if particular:
                 progress += 12
                 percent = int(progress)
+                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
                 progress_bar.progress(progress)
-                percent_text.text(f"Percent: %{percent}")
 
             goal_date = st.date_input("What is your goal date?", format="MM/DD/YYYY")
             if goal_date:
                 progress += 12
                 percent = int(progress)
+                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
                 progress_bar.progress(progress)
-                percent_text.text(f"Percent: %{percent}")
             investment = st.text_input("How much are you willing to invest per month? (e.g., $100-$200)")
             if investment:
                 progress += 12
                 percent = int(progress)
+                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
                 progress_bar.progress(progress)
-                percent_text.text(f"Percent: %{percent}")
 
             age = st.number_input("Lastly, what is your age?", min_value=0, step=1)
 
@@ -83,10 +82,9 @@ def run():
                 
                 progress += 4
                 percent = int(progress)
+                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
                 progress_bar.progress(progress)
-                percent_text.text(f"Percent: %{percent}")
 
-                # Build prompt
                 prompt = f"""
 You are my personal dietitian and trainer, tailoring my dietary needs and restrictions to provide personalized meal plans.
 Provide advice to help me meet my goals. Include a suggested calorie count, and a weekly planner of what I should be eating or doing to achieve my goals by {goal_date.strftime('%m/%d/%Y')}.
