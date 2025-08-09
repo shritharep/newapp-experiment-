@@ -58,7 +58,6 @@ def run():
             age = st.number_input("Lastly, what is your age?", min_value=0, step=1)
 
             if age > 0:
-                st.info("You fall under the adult category.") # Simplified age category for brevity
                 if age <= 1:
                     st.info("You are in the infant category.")
                 elif age < 13:
@@ -68,15 +67,6 @@ def run():
                 else:
                     st.info("You fall under the adult category.")
 
-            if st.button("Generate My Plan"):
-                st.subheader("Here is what you provided:")
-                st.write(f"Dietary Lifestyle: {dietary_lifestyle}")
-                st.write(f"Goal(s): {goals}")
-                st.write(f"Specific Goal: {specific}")
-                st.write(f"Particular Notes/Specifications: {particular}")
-                st.write(f"Projected Goal Date: {goal_date.strftime('%m/%d/%Y')}")
-                st.write(f"Preferred Investment Range: {investment}")
-                st.write(f"Age: {age}")
 
                 if age > 0:
                     progress += 4
@@ -90,7 +80,7 @@ def run():
 
                     Based on this info, I am {age} years old, and my dietary lifestyle is {dietary_lifestyle}. My goal date is {goal_date.strftime('%m/%d/%Y')}, and I'm willing to invest {investment} per month. I want to work on my {goals}, specifically {specific}. I also have some further notes and specifications: {particular}.
                 """
-
+       if st.button("Generate My Plan"):
                 response = model.generate_content([prompt])
                 st.subheader("Your Customized Plan:")
                 st.text(response.text)
