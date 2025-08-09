@@ -29,9 +29,10 @@ def run():
     st.session_state.total_questions = len(questions)
 
     progress_percentage = st.session_state.current_question / st.session_state.total_questions
+    percent = int(progress_percentage * 100)
+    st.write(f"Percent: {percent}%")
     st.progress(progress_percentage)
 
-    # Show question and capture answer
     if st.session_state.current_question < st.session_state.total_questions:
         current_q = questions[st.session_state.current_question]
         # Use value=st.session_state.get(key, "") to preserve answer when going back
@@ -61,7 +62,7 @@ def run():
         elif st.session_state.current_question == st.session_state.total_questions:
             if st.button("Generate Meal Plan", key="gen_btn"):
                 prompt = f'''
-As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by detailed guidance and an optimized grocery list. Please use the user-provided information for deep personalization.
+As an experienced culinary artist, certified nutritionist, and registered dietitian, your primary objective is to craft a personalized, budget-conscious, and health-optimized meal plan, accompanied by[...]
 
 1. Event & Context
 - Purpose of Meal Planning: {st.session_state.get('event', 'N/A')}
@@ -105,7 +106,7 @@ Important Considerations for Your AI Analysis
 - Minimize Waste
 
 Please respond as a trusted and seasoned culinary-nutritional expert-professional, clear, warm, and fully aligned with my goals for nourishment, enjoyment, and practical success.
-Provide the output in plain text. Do not use any markdown formatting, including headings, lists, bold text, or underlining. Structure the information clearly using line breaks and indentation only. Use bullet points under subheadings with hyphens.
+Provide the output in plain text. Do not use any markdown formatting, including headings, lists, bold text, or underlining. Structure the information clearly using line breaks and indentation only. Us[...]
 '''
                 with st.spinner('Generating your personalized meal plan...'):
                     try:
@@ -172,6 +173,5 @@ Provide the output in plain text. Do not use any markdown formatting, including 
     elif 'generated_content' in st.session_state and st.session_state.generated_content is None:
         st.warning("No meal plan could be generated. Please check your inputs or try again.")
 
-# To run with Streamlit
 if __name__ == "__main__":
     run()
