@@ -6,7 +6,7 @@ import second
 import third
 
 st.set_page_config(page_title="FreshFetch", layout="wide")
-st.title("Welcome to Fresh Fetch")
+st.title("Welcome to FreshFetch")
 
 st.markdown("Choose your personal guide for today")
 
