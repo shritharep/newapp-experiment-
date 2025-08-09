@@ -1,4 +1,3 @@
-# Rithikk Vimal's code backbone
 import streamlit as st
 import google.generativeai as genai
 import time  
@@ -16,24 +15,14 @@ def run():
     if "move_forward" not in st.session_state:
         st.session_state["move_forward"] = ""
 
-    def get_total_questions():
-        # If user opts for more questions, count the extras
-        return 10 if st.session_state.get("move_forward") == "yes" else 7
-
-    # Count answered questions (only after user selects a value)
-    answered = 0
-
-    # --- PROGRESS BAR SECTION AT TOP ---
-    # Place-holder for updating progress after collecting answers
     progress_placeholder = st.empty()
 
-    # Collect responses (dietary_restrictions, meal_time, caloric_max, move_forward all start as blank)
     name = st.text_input("Enter your name", key="name")
     dietary_restrictions = st.selectbox("What are your dietary restrictions?", dietary_options, index=0, key="dietary_restrictions")
     meal_time = st.selectbox("What is your meal time?", meal_preptime, index=0, key="meal_time")
     kitchen_restrictions = st.text_input("What are your kitchen restrictions? (e.g. materials you lack)", key="kitchen_restrictions")
     goal = st.text_input("Enter your goal or purpose for this meal", key="goal")
-    caloric_max = st.text_input("Maximum calories for the full meal:", value="", key="caloric_max")
+    caloric_max = st.text_input("Maximum calories for the full meal:", value="", key="caloric_max")  # blank by default
     st.title("Help us know you better")
     move_forward = st.selectbox("Do you want to answer some questions about yourself?", ["", "no", "yes"], index=0, key="move_forward")
 
@@ -44,17 +33,16 @@ def run():
         meal_entrees = st.selectbox("How many entrees do you want?", ["0", "1", "2", "3", "4"], key="meal_entrees")
         meal_budget = st.number_input("What is your meal budget (in dollars)?", key="meal_budget")
 
-    # Only count a question if it is not blank/empty
+    answered = 0
     if name: answered += 1
     if dietary_restrictions and dietary_restrictions != "": answered += 1
     if meal_time and meal_time != "": answered += 1
     # kitchen_restrictions can be left blank, always count it as answered
     answered += 1
     if goal: answered += 1
-    # caloric_max: Only count if not blank and is a positive integer/float
+    # caloric_max: Only count if not blank and is a number
     if caloric_max.strip() != "":
         try:
-            # Try converting to float, count only if it's a valid number
             float(caloric_max)
             answered += 1
         except ValueError:
@@ -63,8 +51,10 @@ def run():
     if move_forward == "yes":
         if meal_appetizers: answered += 1
         if meal_entrees: answered += 1
-        # meal_budget is number_input, always counts as answered
-        answered += 1
+        answered += 1  
+
+    def get_total_questions():
+        return 10 if st.session_state.get("move_forward") == "yes" else 7
 
     total_questions = get_total_questions()
     percent = int((answered / total_questions) * 100)
