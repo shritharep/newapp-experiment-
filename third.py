@@ -71,7 +71,8 @@ def run():
         with st.spinner("Generating meal plan..."):
             try:
                 response = model.generate_content(prompt)
-                plan_text = response.text
+                # --- FIX: Use correct Gemini output access ---
+                plan_text = response.candidates[0].content.parts[0].text
 
                 # Simulated progress bar
                 progress_text = "Finding meal plan. Please wait."
@@ -90,3 +91,6 @@ def run():
     # Optional: back to main/home button
     if st.button("Back to Main"):
         st.switch_page("MainPage.py")
+
+if __name__ == "__main__":
+    run()
