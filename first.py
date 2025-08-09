@@ -11,14 +11,20 @@ def run():
     progress = 0
     percent = 0
 
-    percent_placeholder = st.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+    percent_placeholder = st.markdown(
+        f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+        unsafe_allow_html=True
+    )
     progress_bar = st.progress(progress)
 
     name = st.text_input("What is your name, or what should we call you?")
     if name:
         progress += 16
         percent = int(progress)
-        percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+        percent_placeholder.markdown(
+            f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+            unsafe_allow_html=True
+        )
         progress_bar.progress(progress)
         st.success(f"Hi {name}! Welcome to the community! Let's get started.")
 
@@ -26,14 +32,20 @@ def run():
         if dietary_lifestyle:
             progress += 16
             percent = int(progress)
-            percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+            percent_placeholder.markdown(
+                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                unsafe_allow_html=True
+            )
             progress_bar.progress(progress)
 
         goals = st.selectbox("What is your aim with this platform?", ["", "fitness", "health", "weight-management"])
         if goals:
             progress += 16
             percent = int(progress)
-            percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+            percent_placeholder.markdown(
+                f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                unsafe_allow_html=True
+            )
             progress_bar.progress(progress)
             if goals == "fitness":
                 st.info("Looks like you want to improve your fitness levels. Good for you!")
@@ -46,26 +58,38 @@ def run():
             if specific:
                 progress += 12
                 percent = int(progress)
-                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+                percent_placeholder.markdown(
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    unsafe_allow_html=True
+                )
                 progress_bar.progress(progress)
             particular = st.text_input("Any specific area of your body or any further specifications?")
             if particular:
                 progress += 12
                 percent = int(progress)
-                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+                percent_placeholder.markdown(
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    unsafe_allow_html=True
+                )
                 progress_bar.progress(progress)
 
             goal_date = st.date_input("What is your goal date?", format="MM/DD/YYYY")
             if goal_date:
                 progress += 12
                 percent = int(progress)
-                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+                percent_placeholder.markdown(
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    unsafe_allow_html=True
+                )
                 progress_bar.progress(progress)
             investment = st.text_input("How much are you willing to invest per month? (e.g., $100-$200)")
             if investment:
                 progress += 12
                 percent = int(progress)
-                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+                percent_placeholder.markdown(
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    unsafe_allow_html=True
+                )
                 progress_bar.progress(progress)
 
             age = st.number_input("Lastly, what is your age?", min_value=0, step=1)
@@ -82,7 +106,10 @@ def run():
                 
                 progress += 4
                 percent = int(progress)
-                percent_placeholder.markdown(f"<p style='text-align:center; font-size:0.8em; color:gray;'>Percent: {percent}%</p>", unsafe_allow_html=True)
+                percent_placeholder.markdown(
+                    f"<div style='margin-bottom:-10px;'><p style='text-align:left; font-size:1.1em; color:black; margin:0;'>{percent}%</p></div>",
+                    unsafe_allow_html=True
+                )
                 progress_bar.progress(progress)
 
                 prompt = f"""
