@@ -88,9 +88,5 @@ def run():
             except Exception as e:
                 st.error(f"Error generating meal plan: {e}")
 
-    # Optional: back to main/home button
-    if st.button("Back to Main"):
-        st.switch_page("MainPage.py")
-
 if __name__ == "__main__":
     run()
