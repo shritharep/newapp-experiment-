@@ -12,7 +12,7 @@ def run():
 
     # Welcome header
     st.markdown("<h2 style='text-align: center; color: black;'>Selective Meal Planner</h2>", unsafe_allow_html=True)
-    st.text("Welcome to...")
+  
 
     # Define options
     dietary_options = ["Vegan", "Vegetarian", "Non-Vegetarian", "Pescatarian", "Omnivore"]
