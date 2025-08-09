@@ -23,7 +23,6 @@ def run():
             progress += 16
             progress_bar.progress(progress)
 
-
         goals = st.selectbox("What is your aim with this platform?", ["", "fitness", "health", "weight-management"])
         if goals:
             progress += 16
@@ -44,7 +43,6 @@ def run():
                 progress += 12
                 progress_bar.progress(progress)
 
-
             goal_date = st.date_input("What is your goal date?", format="MM/DD/YYYY")
             if goal_date:
                 progress += 12
@@ -53,7 +51,6 @@ def run():
             if investment:
                 progress += 12
                 progress_bar.progress(progress)
-
 
             age = st.number_input("Lastly, what is your age?", min_value=0, step=1)
 
@@ -66,25 +63,27 @@ def run():
                     st.info("You are in the teenager category.")
                 else:
                     st.info("You fall under the adult category.")
+                
+                progress += 4
+                progress_bar.progress(progress)
 
-
-                if age > 0:
-                    progress += 4
-                    progress_bar.progress(progress)
-
-
+                # Build prompt
                 prompt = f"""
-                    You are my personal dietitian and trainer, tailoring my dietary needs and restrictions to provide personalized meal plans.
-                    Provide advice to help me meet my goals. Include a suggested calorie count, and a weekly planner of what I should be eating or doing to achieve my goals by {goal_date}.
-                    Provide the output in plain text. Do not use any markdown formatting, including headings, lists, bold text, or underlining. Structure the information clearly using line breaks and indentation only. Use bullet points under subheadings with hyphens.
+You are my personal dietitian and trainer, tailoring my dietary needs and restrictions to provide personalized meal plans.
+Provide advice to help me meet my goals. Include a suggested calorie count, and a weekly planner of what I should be eating or doing to achieve my goals by {goal_date.strftime('%m/%d/%Y')}.
+Provide the output in plain text. Do not use any markdown formatting, including headings, lists, bold text, or underlining. Structure the information clearly using line breaks and short paragraphs.
 
-                    Based on this info, I am {age} years old, and my dietary lifestyle is {dietary_lifestyle}. My goal date is {goal_date.strftime('%m/%d/%Y')}, and I'm willing to invest {investment} per month. I want to work on my {goals}, specifically {specific}. I also have some further notes and specifications: {particular}.
-                """
-       if st.button("Generate My Plan"):
-                response = model.generate_content([prompt])
-                st.subheader("Your Customized Plan:")
-                st.text(response.text)
+Based on this info, I am {age} years old, and my dietary lifestyle is {dietary_lifestyle}. My goal date is {goal_date.strftime('%m/%d/%Y')}, and I'm willing to invest {investment} per month. My goal is {goals}, specifically: {specific}. Particular focus: {particular}.
+"""
+
+                if st.button("Generate My Plan"):
+                    response = model.generate_content([prompt])
+                    st.subheader("Your Customized Plan:")
+                    # Depending on Gemini API, adjust this if response.text is not correct
+                    st.text(response.text)
+                else:
+                    st.warning("Please fill in all the fields to generate your personalized plan.")
             else:
-                st.warning("Please fill in all the fields to generate your personalized plan.")
+                st.warning("Please enter your age to continue.")
     else:
         st.warning("Please enter your name to start.")
