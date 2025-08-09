@@ -56,7 +56,7 @@ def run():
     total_questions = get_total_questions()
     percent = int((answered / total_questions) * 100) if total_questions > 0 else 0
     percent = max(0, min(percent, 100))
-    progress_bar = progress_placeholder.progress(percent, text=f"Progress: {percent}%")
+    progress_bar = progress_placeholder.progress(percent, text="")
 
     if st.button("Generate Meal Plan"):
         st.session_state["name"] = name
