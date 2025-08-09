@@ -10,24 +10,32 @@ def run():
     st.set_page_config(page_title="FreshFetch", layout="wide")
     st.markdown("<h2 style='text-align: center; color: black;'>Selective Meal Planner</h2>", unsafe_allow_html=True)
 
-    dietary_options = ["Vegan", "Vegetarian", "Non-Vegetarian", "Pescatarian", "Omnivore"]
-    meal_preptime = ["All Day", "Breakfast", "Brunch", "Lunch", "Dinner"]
+    dietary_options = ["", "Vegan", "Vegetarian", "Non-Vegetarian", "Pescatarian", "Omnivore"]
+    meal_preptime = ["", "All Day", "Breakfast", "Brunch", "Lunch", "Dinner"]
 
     if "move_forward" not in st.session_state:
-        st.session_state["move_forward"] = "no"
+        st.session_state["move_forward"] = ""
 
     def get_total_questions():
+        # If user opts for more questions, count the extras
         return 10 if st.session_state.get("move_forward") == "yes" else 7
 
-    # Collect responses first
+    # Count answered questions (only after user selects a value)
+    answered = 0
+
+    # --- PROGRESS BAR SECTION AT TOP ---
+    # Place-holder for updating progress after collecting answers
+    progress_placeholder = st.empty()
+
+    # Collect responses (dietary_restrictions, meal_time, caloric_max, move_forward all start as blank)
     name = st.text_input("Enter your name", key="name")
-    dietary_restrictions = st.selectbox("What are your dietary restrictions?", dietary_options, key="dietary_restrictions")
-    meal_time = st.selectbox("What is your meal time?", meal_preptime, key="meal_time")
+    dietary_restrictions = st.selectbox("What are your dietary restrictions?", dietary_options, index=0, key="dietary_restrictions")
+    meal_time = st.selectbox("What is your meal time?", meal_preptime, index=0, key="meal_time")
     kitchen_restrictions = st.text_input("What are your kitchen restrictions? (e.g. materials you lack)", key="kitchen_restrictions")
     goal = st.text_input("Enter your goal or purpose for this meal", key="goal")
-    caloric_max = st.number_input("Maximum calories for the full meal:", key="caloric_max")
+    caloric_max = st.text_input("Maximum calories for the full meal:", value="", key="caloric_max")
     st.title("Help us know you better")
-    move_forward = st.selectbox("Do you want to answer some questions about yourself?", ["no", "yes"], key="move_forward")
+    move_forward = st.selectbox("Do you want to answer some questions about yourself?", ["", "no", "yes"], index=0, key="move_forward")
 
     meal_appetizers = meal_entrees = meal_budget = None
     if move_forward == "yes":
@@ -36,17 +44,22 @@ def run():
         meal_entrees = st.selectbox("How many entrees do you want?", ["0", "1", "2", "3", "4"], key="meal_entrees")
         meal_budget = st.number_input("What is your meal budget (in dollars)?", key="meal_budget")
 
-    # Count answered questions (only if filled)
-    answered = 0
+    # Only count a question if it is not blank/empty
     if name: answered += 1
-    if dietary_restrictions: answered += 1
-    if meal_time: answered += 1
-    # kitchen_restrictions can be empty, but we still count it as answered (since it's optional)
+    if dietary_restrictions and dietary_restrictions != "": answered += 1
+    if meal_time and meal_time != "": answered += 1
+    # kitchen_restrictions can be left blank, always count it as answered
     answered += 1
     if goal: answered += 1
-    # caloric_max has a default (0), so check if the user changed it or just always count it
-    answered += 1
-    if move_forward: answered += 1
+    # caloric_max: Only count if not blank and is a positive integer/float
+    if caloric_max.strip() != "":
+        try:
+            # Try converting to float, count only if it's a valid number
+            float(caloric_max)
+            answered += 1
+        except ValueError:
+            pass
+    if move_forward and move_forward != "": answered += 1
     if move_forward == "yes":
         if meal_appetizers: answered += 1
         if meal_entrees: answered += 1
@@ -55,7 +68,6 @@ def run():
 
     total_questions = get_total_questions()
     percent = int((answered / total_questions) * 100)
-    progress_placeholder = st.empty()
     progress_bar = progress_placeholder.progress(percent, text=f"Progress: {percent}%")
 
     if st.button("Generate Meal Plan"):
