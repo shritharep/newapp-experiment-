@@ -10,9 +10,9 @@ def run():
 
     progress = 0
     percent = 0
+    percent_text.text(f"Percent: {percent}%")
     progress_bar = st.progress(progress)
     percent_text = st.empty()
-    percent_text.text(f"Percent: %{percent}")
 
     name = st.text_input("What is your name, or what should we call you?")
     if name:
