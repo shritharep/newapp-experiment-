@@ -37,10 +37,7 @@ def run():
     if name: answered += 1
     if dietary_restrictions and dietary_restrictions != "": answered += 1
     if meal_time and meal_time != "": answered += 1
-    # kitchen_restrictions can be left blank, always count it as answered
-    answered += 1
     if goal: answered += 1
-    # caloric_max: Only count if not blank and is a number
     if caloric_max.strip() != "":
         try:
             float(caloric_max)
@@ -54,10 +51,11 @@ def run():
         answered += 1  
 
     def get_total_questions():
-        return 10 if st.session_state.get("move_forward") == "yes" else 7
+        return 9 if st.session_state.get("move_forward") == "yes" else 6
 
     total_questions = get_total_questions()
-    percent = int((answered / total_questions) * 100)
+    percent = int((answered / total_questions) * 100) if total_questions > 0 else 0
+    percent = max(0, min(percent, 100))
     progress_bar = progress_placeholder.progress(percent, text=f"Progress: {percent}%")
 
     if st.button("Generate Meal Plan"):
